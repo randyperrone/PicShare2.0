@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "451196084441",
+    "firebase_url": "https://picshare20-4b735.firebaseio.com",
+    "project_id": "picshare20-4b735",
+    "storage_bucket": "picshare20-4b735.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451196084441:android:6fca50d67fe4a91b",
+        "android_client_info": {
+          "package_name": "com.example.randy.picshare20"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "451196084441-3m2ifqfnpous0lak4v92d9hdmd19h8tb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.randy.picshare20",
+            "certificate_hash": "5c0898dbd870ea251ffc087b020c5a121d7ab343"
+          }
+        },
+        {
+          "client_id": "451196084441-0cja2no2rds4h2d8r2kc5gino6r9jes3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-ysT3AystEY3hzMGw6uYzIXfsyGS4Wlc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "451196084441-0cja2no2rds4h2d8r2kc5gino6r9jes3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
