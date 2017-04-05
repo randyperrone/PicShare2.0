@@ -37,10 +37,11 @@ public class MyProfile extends Fragment {
     private View layout;
     private DatabaseReference mDatabase;
     private String uploadId;
-    private String emailAddress;
-    private String userName;
+    private String emailAddress, userName, name, height, weight, education, gender, ethnicity, religion;
+    private String partnerWeight, partnerHeight, partnerEducation, partnerGender, partnerEthnicity, partnerReligion;
     private TextView showEmail, showUsername, showName, showHeight, showWeight, showEducation, showGender, showEthnicity, showReligion;
     private TextView showPartnerHeight, showPartnerWeight, showPartnerEducation, showPartnerGender, showPartnerEthnicity, showPartnerReligion;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -81,22 +82,6 @@ public class MyProfile extends Fragment {
                              Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.fragment_my_profile, container, false);
 
-        showName = (TextView)layout.findViewById(R.id.profile_display_name);
-        showHeight = (TextView)layout.findViewById(R.id.profile_display_height);
-        showWeight= (TextView)layout.findViewById(R.id.profile_display_weight);
-        showEducation= (TextView)layout.findViewById(R.id.profile_display_education);
-        showGender= (TextView)layout.findViewById(R.id.profile_display_gender);
-        showEthnicity= (TextView)layout.findViewById(R.id.profile_display_ethnicity);
-        showReligion= (TextView)layout.findViewById(R.id.profile_display_religion);
-        showPartnerHeight= (TextView)layout.findViewById(R.id.profile_display_partner_height);
-        showPartnerWeight= (TextView)layout.findViewById(R.id.profile_display_partner_weight);
-        showPartnerEducation= (TextView)layout.findViewById(R.id.profile_display_partner_education);
-        showPartnerGender= (TextView)layout.findViewById(R.id.profile_display_partner_gender);
-        showPartnerEthnicity= (TextView)layout.findViewById(R.id.profile_display_partner_ethnicity);
-        showPartnerReligion= (TextView)layout.findViewById(R.id.profile_display_partner_religion);
-        showEmail = (TextView)layout.findViewById(R.id.emailaddress_show_textbox);
-        showUsername = (TextView)layout.findViewById(R.id.username_show_textbox);
-
         uploadId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         emailAddress = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         mDatabase = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_UPLOADS_ROOT + "/" + uploadId + "/" + DATABASE_PATH_PROFILE);
@@ -105,15 +90,88 @@ public class MyProfile extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                userName = user.getUsername();
-                showEmail.setText(emailAddress);
-                showUsername.setText(userName);
-                dataSnapshot.getChildren();
 
+                if(emailAddress != null){
+                    showEmail = (TextView)layout.findViewById(R.id.emailaddress_show_textbox);
+                    showEmail.setText(emailAddress);
+                }
+                if(user.getUsername() != null){
+                    userName = user.getUsername();
+                    showUsername = (TextView)layout.findViewById(R.id.username_show_textbox);
+                    showUsername.setText(userName);
+                }
+
+                dataSnapshot.getChildren();
                 Map<String, Object> data = (Map<String, Object>) dataSnapshot.getValue();
 
-                String religion = data.get(Consts.DATABASE_PATH_UPLOADS_RELIGION).toString();
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_NAME) != null){
+                    name = data.get(Consts.DATABASE_PATH_UPLOADS_NAME).toString();
+                    showName = (TextView)layout.findViewById(R.id.profile_display_name);
+                    showName.setText(name);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_HEIGHT) != null){
+                    height = data.get(Consts.DATABASE_PATH_UPLOADS_HEIGHT).toString();
+                    showHeight = (TextView)layout.findViewById(R.id.profile_display_height);
+                    showHeight.setText(height);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_WEIGHT) != null){
+                    weight = data.get(Consts.DATABASE_PATH_UPLOADS_WEIGHT).toString();
+                    showWeight= (TextView)layout.findViewById(R.id.profile_display_weight);
+                    showWeight.setText(weight);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_EDUCATION) != null){
+                    education = data.get(Consts.DATABASE_PATH_UPLOADS_EDUCATION).toString();
+                    showEducation= (TextView)layout.findViewById(R.id.profile_display_education);
+                    showEducation.setText(education);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_GENDER) != null){
+                    gender = data.get(Consts.DATABASE_PATH_UPLOADS_GENDER).toString();
+                    showGender= (TextView)layout.findViewById(R.id.profile_display_gender);
+                    showGender.setText(gender);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_ETHNICITY) != null){
+                    ethnicity = data.get(Consts.DATABASE_PATH_UPLOADS_ETHNICITY).toString();
+                    showEthnicity= (TextView)layout.findViewById(R.id.profile_display_ethnicity);
+                    showEthnicity.setText(ethnicity);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_RELIGION) != null){
+                    religion = data.get(Consts.DATABASE_PATH_UPLOADS_RELIGION).toString();
+                    showReligion= (TextView)layout.findViewById(R.id.profile_display_religion);
+                    showReligion.setText(religion);
+                }
 
+                Map<String, Object> partnerData = (Map<String, Object>) data.get(Consts.DATABASE_PATH_UPLOADS_PARTNER);
+
+                if(partnerData.get(Consts.DATABASE_PATH_UPLOADS_HEIGHT) != null){
+                    partnerHeight = partnerData.get(Consts.DATABASE_PATH_UPLOADS_HEIGHT).toString();
+                    showPartnerHeight= (TextView)layout.findViewById(R.id.profile_display_partner_height);
+                    showPartnerHeight.setText(partnerHeight);
+                }
+                if(partnerData.get(Consts.DATABASE_PATH_UPLOADS_WEIGHT) != null){
+                    partnerWeight = partnerData.get(Consts.DATABASE_PATH_UPLOADS_WEIGHT).toString();
+                    showPartnerWeight= (TextView)layout.findViewById(R.id.profile_display_partner_weight);
+                    showPartnerWeight.setText(partnerWeight);
+                }
+                if(partnerData.get(Consts.DATABASE_PATH_UPLOADS_EDUCATION) != null){
+                    partnerEducation = partnerData.get(Consts.DATABASE_PATH_UPLOADS_EDUCATION).toString();
+                    showPartnerEducation= (TextView)layout.findViewById(R.id.profile_display_partner_education);
+                    showPartnerEducation.setText(partnerEducation);
+                }
+                if(partnerData.get(Consts.DATABASE_PATH_UPLOADS_GENDER) != null){
+                    partnerGender = partnerData.get(Consts.DATABASE_PATH_UPLOADS_GENDER).toString();
+                    showPartnerGender= (TextView)layout.findViewById(R.id.profile_display_partner_gender);
+                    showPartnerGender.setText(partnerGender);
+                }
+                if(partnerData.get(Consts.DATABASE_PATH_UPLOADS_ETHNICITY) != null){
+                    partnerEthnicity = partnerData.get(Consts.DATABASE_PATH_UPLOADS_ETHNICITY).toString();
+                    showPartnerEthnicity= (TextView)layout.findViewById(R.id.profile_display_partner_ethnicity);
+                    showPartnerEthnicity.setText(partnerEthnicity);
+                }
+                if(partnerData.get(Consts.DATABASE_PATH_UPLOADS_RELIGION) != null){
+                    partnerReligion = partnerData.get(Consts.DATABASE_PATH_UPLOADS_RELIGION).toString();
+                    showPartnerReligion= (TextView)layout.findViewById(R.id.profile_display_partner_religion);
+                    showPartnerReligion.setText(partnerReligion);
+                }
 
             }
 
