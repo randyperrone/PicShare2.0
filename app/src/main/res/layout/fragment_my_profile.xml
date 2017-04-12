@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.randy.picshare20.Fragments.MyProfile">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,10 +31,11 @@
                 android:id="@+id/username_show_textbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,8 +52,8 @@
                 android:id="@+id/emailaddress_show_textbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -70,8 +72,28 @@
                 android:id="@+id/profile_display_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile_zip"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/profile_display_zipcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -90,8 +112,8 @@
                 android:id="@+id/profile_display_height"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -110,10 +132,11 @@
                 android:id="@+id/profile_display_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -129,10 +152,11 @@
                 android:id="@+id/profile_display_education"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -148,10 +172,11 @@
                 android:id="@+id/profile_display_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -167,10 +192,11 @@
                 android:id="@+id/profile_display_ethnicity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -186,10 +212,11 @@
                 android:id="@+id/profile_display_religion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -205,8 +232,8 @@
                 android:id="@+id/profile_display_partner_height"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -225,8 +252,8 @@
                 android:id="@+id/profile_display_partner_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -245,8 +272,8 @@
                 android:id="@+id/profile_display_partner_education"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -265,8 +292,8 @@
                 android:id="@+id/profile_display_partner_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -285,8 +312,8 @@
                 android:id="@+id/profile_display_partner_ethnicity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -305,8 +332,8 @@
                 android:id="@+id/profile_display_partner_religion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
 
         </LinearLayout>
 

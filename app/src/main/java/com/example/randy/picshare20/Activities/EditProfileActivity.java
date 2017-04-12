@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.randy.picshare20.Model.Consts;
@@ -17,9 +18,14 @@ import com.example.randy.picshare20.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import static com.example.randy.picshare20.Model.Consts.DATABASE_PATH_UPLOADS_EDUCATION;
 import static com.example.randy.picshare20.Model.Consts.DATABASE_PATH_UPLOADS_ETHNICITY;
@@ -38,7 +44,11 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText partnerheightFeet, partnerHeightInches, partnerWeight;
     String username, email, name, zipcode, heightFeet, heightInches, weight, partnerHeightFeetString, partnerHeightInchesString, partnerWeightString;
     String education, gender, ethnicity, religion, partnerEducation, partnerGender, partnerEthnicity, partnerReligion;
-    FirebaseUser user;
+
+    private DatabaseReference mDatabase;
+    private String uploadId;
+    private String currentUsername, currentEmail, currentName, currentZipcode, currentheight, currentWeight, currentEducation, currentGender, currentEthnicity, currentReligion;
+    private String currentPartnerHeight, currentPartnerWeight, currentPartnerEducation, currentPartnerGender, currentPartnerEthnicity, currentPartnerReligion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,15 +81,120 @@ public class EditProfileActivity extends AppCompatActivity {
         partnerHeightInches = (EditText)findViewById(R.id.profile_get_partner_height_inches);
         partnerWeight = (EditText)findViewById(R.id.profile_get_partner_weight);
 
+        addEducationToList(educationSpinner, null);
+        addEducationToList(educationPartnerSpinner, null);
+        addGenderToList(genderSpinner, null);
+        addGenderToList(genderPartnerSpinner, null);
+        addEthnicityToList(ethnicitySpinner, null);
+        addEthnicityToList(ethnicityPartnerSpinner, null);
+        addReligionToList(religionSpinner, null);
+        addReligionToList(religionPartnerSpinner, null);
 
-        addEducationToList(educationSpinner);
-        addEducationToList(educationPartnerSpinner);
-        addGenderToList(genderSpinner);
-        addGenderToList(genderPartnerSpinner);
-        addEthnicityToList(ethnicitySpinner);
-        addEthnicityToList(ethnicityPartnerSpinner);
-        addReligionToList(religionSpinner);
-        addReligionToList(religionPartnerSpinner);
+
+
+        uploadId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference(Consts.DATABASE_PATH_UPLOADS_USER + "/" + uploadId + "/" + Consts.DATABASE_PATH_UPLOADS_PROFILE);
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+
+
+                if(FirebaseAuth.getInstance().getCurrentUser().getEmail() != null){
+                    currentEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                    emailBox.setText(currentEmail);
+                }
+                if(user.getUsername() != null){
+                    currentUsername = user.getUsername();
+                    usernameBox.setText(currentUsername);
+                }
+
+                dataSnapshot.getChildren();
+                Map<String, Object> data = (Map<String, Object>) dataSnapshot.getValue();
+
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_NAME) != null){
+                    currentName = data.get(Consts.DATABASE_PATH_UPLOADS_NAME).toString();
+                    nameBox.setText(currentName);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_ZIP) != null){
+                    currentZipcode = data.get(Consts.DATABASE_PATH_UPLOADS_ZIP).toString();
+                    zipBox.setText(currentZipcode);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_HEIGHT) != null){
+                    currentheight = data.get(Consts.DATABASE_PATH_UPLOADS_HEIGHT).toString();
+                    String delims = "[ '\"]+";
+                    String[] tokens = currentheight.split(delims);
+                    if(tokens[0] != null){
+                        heightFeetBox.setText(tokens[0]);
+                    }
+                    if(tokens[1] != null){
+                        heightInchesBox.setText(tokens[1]);
+                    }
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_WEIGHT) != null){
+                    currentWeight = data.get(Consts.DATABASE_PATH_UPLOADS_WEIGHT).toString();
+                    weightBox.setText(currentWeight);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_EDUCATION) != null){
+                    currentEducation = data.get(Consts.DATABASE_PATH_UPLOADS_EDUCATION).toString();
+                    addEducationToList(educationSpinner, currentEducation);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_GENDER) != null){
+                    currentGender = data.get(Consts.DATABASE_PATH_UPLOADS_GENDER).toString();
+                    addGenderToList(genderSpinner, currentGender);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_ETHNICITY) != null){
+                    currentEthnicity = data.get(Consts.DATABASE_PATH_UPLOADS_ETHNICITY).toString();
+                    addEthnicityToList(ethnicitySpinner, currentEthnicity);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_RELIGION) != null){
+                    currentReligion = data.get(Consts.DATABASE_PATH_UPLOADS_RELIGION).toString();
+                    addReligionToList(religionSpinner, currentReligion);
+                }
+
+                Map<String, Object> partnerData = (Map<String, Object>) data.get(Consts.DATABASE_PATH_UPLOADS_PARTNER);
+
+                if(partnerData.get(Consts.DATABASE_PATH_UPLOADS_HEIGHT) != null){
+                    currentPartnerHeight = partnerData.get(Consts.DATABASE_PATH_UPLOADS_HEIGHT).toString();
+                    String delims = "[ '\"]+";
+                    String[] tokens = currentPartnerHeight.split(delims);
+                    if(tokens[0] != null){
+                        partnerheightFeet.setText(tokens[0]);
+                    }
+                    if(tokens[1] != null){
+                        partnerHeightInches.setText(tokens[1]);
+                    }
+
+                }
+                if(partnerData.get(Consts.DATABASE_PATH_UPLOADS_WEIGHT) != null){
+                    currentPartnerWeight = partnerData.get(Consts.DATABASE_PATH_UPLOADS_WEIGHT).toString();
+                    partnerWeight.setText(currentPartnerWeight);
+                }
+                if(partnerData.get(Consts.DATABASE_PATH_UPLOADS_EDUCATION) != null){
+                    currentPartnerEducation = partnerData.get(Consts.DATABASE_PATH_UPLOADS_EDUCATION).toString();
+                    addEducationToList(educationPartnerSpinner, currentPartnerEducation);
+                }
+                if(partnerData.get(Consts.DATABASE_PATH_UPLOADS_GENDER) != null){
+                    currentPartnerGender = partnerData.get(Consts.DATABASE_PATH_UPLOADS_GENDER).toString();
+                    addGenderToList(genderPartnerSpinner, currentPartnerGender);
+                }
+                if(partnerData.get(Consts.DATABASE_PATH_UPLOADS_ETHNICITY) != null){
+                    currentPartnerEthnicity = partnerData.get(Consts.DATABASE_PATH_UPLOADS_ETHNICITY).toString();
+                    addEthnicityToList(ethnicityPartnerSpinner, currentPartnerEthnicity);
+                }
+                if(partnerData.get(Consts.DATABASE_PATH_UPLOADS_RELIGION) != null){
+                    currentPartnerReligion = partnerData.get(Consts.DATABASE_PATH_UPLOADS_RELIGION).toString();
+                    addReligionToList(religionPartnerSpinner, currentPartnerReligion);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setImageDrawable(getResources().getDrawable(R.drawable.add));
@@ -168,7 +283,7 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void addEducationToList(Spinner spinner){
+    private void addEducationToList(Spinner spinner, String selectedValue){
         educationList = new ArrayList<>();
         educationList.add(SPINNER_DEFAULT);
         educationList.add("No education");
@@ -182,10 +297,13 @@ public class EditProfileActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, educationList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(arrayAdapter);
-
+        if (selectedValue != null) {
+            int spinnerPosition = arrayAdapter.getPosition(selectedValue);
+            spinner.setSelection(spinnerPosition);
+        }
     }
 
-    private void addGenderToList(Spinner spinner){
+    private void addGenderToList(Spinner spinner, String selectedValue){
         genderList = new ArrayList<>();
         genderList.add(SPINNER_DEFAULT);
         genderList.add("Male");
@@ -194,9 +312,13 @@ public class EditProfileActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, genderList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(arrayAdapter);
+        if (selectedValue != null) {
+            int spinnerPosition = arrayAdapter.getPosition(selectedValue);
+            spinner.setSelection(spinnerPosition);
+        }
     }
 
-    private void addEthnicityToList(Spinner spinner){
+    private void addEthnicityToList(Spinner spinner, String selectedValue){
         ethnicityList = new ArrayList<>();
         ethnicityList.add(SPINNER_DEFAULT);
         ethnicityList.add("Asian");
@@ -211,10 +333,14 @@ public class EditProfileActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ethnicityList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(arrayAdapter);
+        if (selectedValue != null) {
+            int spinnerPosition = arrayAdapter.getPosition(selectedValue);
+            spinner.setSelection(spinnerPosition);
+        }
 
     }
 
-    private void addReligionToList(Spinner spinner){
+    private void addReligionToList(Spinner spinner, String selectedValue){
         religionList = new ArrayList<>();
         religionList.add(SPINNER_DEFAULT);
         religionList.add("Agnosticism");
@@ -230,6 +356,9 @@ public class EditProfileActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, religionList);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(arrayAdapter);
-
+        if (selectedValue != null) {
+            int spinnerPosition = arrayAdapter.getPosition(selectedValue);
+            spinner.setSelection(spinnerPosition);
+        }
     }
 }

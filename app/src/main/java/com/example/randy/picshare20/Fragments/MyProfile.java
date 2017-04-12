@@ -32,14 +32,12 @@ public class MyProfile extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private static final String DATABASE_PATH_UPLOADS_ROOT = "users";
-    private static final String DATABASE_PATH_PROFILE = "profile";
     private View layout;
     private DatabaseReference mDatabase;
     private String uploadId;
-    private String emailAddress, userName, name, height, weight, education, gender, ethnicity, religion;
+    private String emailAddress, userName, name, zip, height, weight, education, gender, ethnicity, religion;
     private String partnerWeight, partnerHeight, partnerEducation, partnerGender, partnerEthnicity, partnerReligion;
-    private TextView showEmail, showUsername, showName, showHeight, showWeight, showEducation, showGender, showEthnicity, showReligion;
+    private TextView showEmail, showUsername, showName, showZipCode, showHeight, showWeight, showEducation, showGender, showEthnicity, showReligion;
     private TextView showPartnerHeight, showPartnerWeight, showPartnerEducation, showPartnerGender, showPartnerEthnicity, showPartnerReligion;
 
 
@@ -84,7 +82,7 @@ public class MyProfile extends Fragment {
 
         uploadId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         emailAddress = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        mDatabase = FirebaseDatabase.getInstance().getReference(DATABASE_PATH_UPLOADS_ROOT + "/" + uploadId + "/" + DATABASE_PATH_PROFILE);
+        mDatabase = FirebaseDatabase.getInstance().getReference(Consts.DATABASE_PATH_UPLOADS_USER + "/" + uploadId + "/" + Consts.DATABASE_PATH_UPLOADS_PROFILE);
 
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -108,6 +106,11 @@ public class MyProfile extends Fragment {
                     name = data.get(Consts.DATABASE_PATH_UPLOADS_NAME).toString();
                     showName = (TextView)layout.findViewById(R.id.profile_display_name);
                     showName.setText(name);
+                }
+                if(data.get(Consts.DATABASE_PATH_UPLOADS_ZIP) != null){
+                    zip = data.get(Consts.DATABASE_PATH_UPLOADS_ZIP).toString();
+                    showZipCode = (TextView)layout.findViewById(R.id.profile_display_zipcode);
+                    showZipCode.setText(zip);
                 }
                 if(data.get(Consts.DATABASE_PATH_UPLOADS_HEIGHT) != null){
                     height = data.get(Consts.DATABASE_PATH_UPLOADS_HEIGHT).toString();
